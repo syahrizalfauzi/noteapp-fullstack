@@ -2,7 +2,6 @@ import noteModel from "../models/noteModel.js";
 
 const getNote = (req, res) => {
   const { userId } = req.body;
-  console.log("notes requested by userId ", userId);
 
   return noteModel.getNoteByUserId(userId, (error, results) => {
     if (error) return res.status(500).send({ error });
