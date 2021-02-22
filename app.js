@@ -3,7 +3,7 @@ import cors from "cors";
 import userRoute from "./routes/userRoute.js";
 import notesRoute from "./routes/noteRoute.js";
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
 app.use(cors());

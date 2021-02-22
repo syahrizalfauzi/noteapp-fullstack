@@ -2,7 +2,7 @@ import connection from "../db/db.js";
 
 const getNoteByUserId = (userId, callback) => {
   connection.query(
-    "SELECT id, title, content, time FROM notes WHERE userId = ?",
+    "SELECT id, title, content, time FROM notes WHERE userId = ? ORDER BY time DESC",
     userId,
     callback
   );
