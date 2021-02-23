@@ -34,7 +34,7 @@ const NoteCard = (note: Note) => {
   };
 
   const getDateText = () => {
-    return moment(note.time).add(7, "hours").format("ddd, DD MMM kk:mm");
+    return moment(note.time).format("ddd, DD MMM kk:mm");
   };
 
   return (
