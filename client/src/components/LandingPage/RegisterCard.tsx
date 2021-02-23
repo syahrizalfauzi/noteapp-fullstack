@@ -132,6 +132,9 @@ const RegisterCard = ({
           className={classes.textField}
           variant="outlined"
           onClick={clearErrorTexts}
+          inputProps={{
+            maxLength: 20,
+          }}
           {...usernameProps}
         />
         <TextField

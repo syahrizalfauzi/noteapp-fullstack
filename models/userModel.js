@@ -7,9 +7,6 @@ const getIdByUsername = (username, callback) => {
     callback
   );
 };
-const getUsernameById = (id, callback) => {
-  connection.query("SELECT username FROM users WHERE id = ?", id, callback);
-};
 const getIdByUsernamePassword = (username, password, callback) => {
   connection.query(
     "SELECT id FROM users WHERE username = ? AND password = MD5(?)",
@@ -17,17 +14,16 @@ const getIdByUsernamePassword = (username, password, callback) => {
     callback
   );
 };
-const createUser = (username, password, name, callback) => {
+const createUser = (username, password, callback) => {
   connection.query(
-    "INSERT INTO users (username, password, name) VALUES (?, MD5(?), ?)",
-    [username, password, name],
+    "INSERT INTO users (username, password) VALUES (?, MD5(?))",
+    [username, password],
     callback
   );
 };
 
 export default {
   getIdByUsername,
-  getUsernameById,
   getIdByUsernamePassword,
   createUser,
 };

@@ -107,7 +107,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchNotes(false);
+    fetchNotes(true);
   }, [fetchNotes]);
 
   return (
