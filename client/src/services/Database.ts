@@ -8,7 +8,7 @@ interface DatabasePushResponse {
 interface DatabaseFetchResponse {
   error: boolean | any;
   message: string;
-  payload: Note[];
+  results: Note[];
 }
 
 export const getNotes = async (): Promise<DatabaseFetchResponse> => {
@@ -17,7 +17,7 @@ export const getNotes = async (): Promise<DatabaseFetchResponse> => {
     return {
       error: true,
       message: "Unauthorized access, please re-login",
-      payload: [],
+      results: [],
     };
 
   try {
@@ -36,7 +36,7 @@ export const getNotes = async (): Promise<DatabaseFetchResponse> => {
     return {
       error: true,
       message: "Request timeout, please try again later",
-      payload: [],
+      results: [],
     };
   }
 };

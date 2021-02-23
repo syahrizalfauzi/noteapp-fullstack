@@ -64,7 +64,7 @@ const AppState = createModel(() => {
             severity: "error",
           });
 
-        setCurrentNotes(response.payload);
+        setCurrentNotes(response.results);
       });
     },
     [setCurrentNotes]
