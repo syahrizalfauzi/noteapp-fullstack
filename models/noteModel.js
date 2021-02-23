@@ -1,4 +1,4 @@
-import connection from "../db/db.js";
+const connection = require("../db.js");
 
 const getNoteByUserId = (userId, callback) => {
   connection.query(
@@ -10,7 +10,7 @@ const getNoteByUserId = (userId, callback) => {
 
 const createNote = (title, content, userId, callback) => {
   connection.query(
-    "INSERT INTO notes (title, content, time, userId) VALUES (?,?,CURRENT_TIME(),?)",
+    "INSERT INTO notes (title, content, userId) VALUES (?,?,?)",
     [title, content, userId],
     callback
   );
@@ -18,7 +18,7 @@ const createNote = (title, content, userId, callback) => {
 
 const updateNote = (title, content, noteId, userId, callback) => {
   connection.query(
-    "UPDATE notes SET title = ?, content = ?, time = CURRENT_TIME() WHERE id = ? AND userid = ?",
+    "UPDATE notes SET title = ?, content = ?, time = CURRENT_TIMESTAMP WHERE id = ? AND userid = ?",
     [title, content, noteId, userId],
     callback
   );
@@ -32,7 +32,7 @@ const deleteNote = (noteId, userId, callback) => {
   );
 };
 
-export default {
+module.exports = {
   getNoteByUserId,
   createNote,
   updateNote,

@@ -1,4 +1,4 @@
-import noteModel from "../models/noteModel.js";
+const noteModel = require("../models/noteModel.js");
 
 const getNote = (req, res) => {
   const { userId } = req.body;
@@ -40,7 +40,7 @@ const deleteNote = (req, res) => {
   });
 };
 
-export default {
+module.exports = {
   getNote,
   createNote,
   updateNote,

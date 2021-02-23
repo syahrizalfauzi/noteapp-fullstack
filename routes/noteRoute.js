@@ -1,6 +1,6 @@
-import express from "express";
-import jwt from "jsonwebtoken";
-import noteController from "../controllers/noteController.js";
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const noteController = require("../controllers/noteController.js");
 
 const app = express.Router();
 const secretKey = process.env.SECRET || "rahasia";
@@ -25,4 +25,4 @@ app.post("/", verifyToken, noteController.createNote);
 app.delete("/", verifyToken, noteController.deleteNote);
 app.put("/", verifyToken, noteController.updateNote);
 
-export default app;
+module.exports = app;

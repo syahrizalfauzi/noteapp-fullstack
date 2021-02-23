@@ -1,5 +1,5 @@
-import userModel from "../models/userModel.js";
-import jwt from "jsonwebtoken";
+const userModel = require("../models/userModel.js");
+const jwt = require("jsonwebtoken");
 
 const secretKey = process.env.SECRET || "rahasia";
 
@@ -64,7 +64,7 @@ const login = (req, res) => {
   });
 };
 
-export default {
+module.exports = {
   register,
   login,
 };
