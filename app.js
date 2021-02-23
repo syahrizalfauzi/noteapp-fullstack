@@ -1,11 +1,17 @@
 const express = require("express");
 const path = require("path");
+const cors = require("cors");
 const userRoute = require("./routes/userRoute.js");
 const notesRoute = require("./routes/noteRoute.js");
 
 const port = process.env.PORT || 5000;
 const app = express();
 
+app.use(
+  cors({
+    origin: "https://noteappijal-fullstack.herokuapp.com",
+  })
+);
 app.use(express.json());
 app.use(
   express.urlencoded({
