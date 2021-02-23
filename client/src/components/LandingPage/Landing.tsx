@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import Snackbar from "@material-ui/core/Snackbar";
 import Typography from "@material-ui/core/Typography";
+import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert, { Color } from "@material-ui/lab/Alert";
 
 import LoginCard from "./LoginCard";

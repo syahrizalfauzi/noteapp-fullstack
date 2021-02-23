@@ -13,13 +13,16 @@ export const login = async (
   username: string,
   password: string
 ): Promise<AuthResponse> => {
+  let timer = setTimeout(() => {
+    throw new Error();
+  }, 5000);
   try {
     console.log({ username, password });
     const response = await api.post("/user/login", {
       username,
       password,
     });
-
+    clearTimeout(timer);
     return response.data;
   } catch ({ response }) {
     if (response.data.message) return response.data;
@@ -31,11 +34,15 @@ export const register = async (
   username: string,
   password: string
 ): Promise<AuthResponse> => {
+  let timer = setTimeout(() => {
+    throw new Error();
+  }, 5000);
   try {
     const response = await api.post("/user/register", {
       username,
       password,
     });
+    clearTimeout(timer);
     return response.data;
   } catch ({ response }) {
     if (response.data.message) return response.data;

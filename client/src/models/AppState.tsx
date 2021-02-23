@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import createModel from "react-scoped-model";
 import Note from "./NoteModel";
+import { Color } from "@material-ui/lab/Alert";
 
 import {
   createNote,
@@ -8,6 +9,12 @@ import {
   updateNote,
   deleteNote,
 } from "../services/Database";
+
+interface SnackbarNotifier {
+  isOpened: boolean;
+  message: string;
+  severity: Color | undefined;
+}
 
 const AppState = createModel(() => {
   const [isEditing, setIsEditing] = useState(false);
@@ -18,6 +25,15 @@ const AppState = createModel(() => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [currentNotes, setNotes] = useState<Note[]>([]);
+  const [snackbar, setSnackbar] = useState<SnackbarNotifier>({
+    isOpened: false,
+    message: "",
+    severity: "success",
+  });
+
+  const handleCloseSnackbar = useCallback(() => {
+    setSnackbar((state) => ({ ...state, isOpened: false }));
+  }, []);
 
   const setCurrentTitle = useCallback((title: string) => {
     setTitle(title);
@@ -40,8 +56,15 @@ const AppState = createModel(() => {
   const fetchNotes = useCallback(
     (reset?: boolean) => {
       if (reset) setCurrentNotes([]);
-      getNotes().then((notes) => {
-        setCurrentNotes(notes);
+      getNotes().then((response) => {
+        if (response.error)
+          return setSnackbar({
+            isOpened: true,
+            message: response.message,
+            severity: "error",
+          });
+
+        setCurrentNotes(response.payload);
       });
     },
     [setCurrentNotes]
@@ -51,35 +74,59 @@ const AppState = createModel(() => {
       createNote({
         title,
         content,
-      })
-        .then((_) => fetchNotes())
-        .then((_) => setEditing(false));
+      }).then((response) => {
+        if (response.error) {
+          return setSnackbar({
+            isOpened: true,
+            message: response.message,
+            severity: "error",
+          });
+        }
+        fetchNotes();
+        setEditing(false);
+      });
     } else {
       updateNote({
         id: currentNote.id,
         title,
         content,
-      })
-        .then((_) => fetchNotes())
-        .then((_) => setEditing(false));
+      }).then((response) => {
+        if (response.error) {
+          return setSnackbar({
+            isOpened: true,
+            message: response.message,
+            severity: "error",
+          });
+        }
+        fetchNotes();
+        setEditing(false);
+      });
     }
   }, [content, currentNote.id, fetchNotes, setEditing, title]);
   const removeNote = useCallback(() => {
-    deleteNote(currentNote)
-      .then((_) => fetchNotes())
-      .then((_) => setEditing(false));
+    deleteNote(currentNote).then((response) => {
+      if (response.error) {
+        return setSnackbar({
+          isOpened: true,
+          message: response.message,
+          severity: "error",
+        });
+      }
+      fetchNotes();
+      setEditing(false);
+    });
   }, [currentNote, fetchNotes, setEditing]);
 
   return {
     isEditing,
     currentNote,
     currentNotes,
-
+    snackbar,
     title,
     content,
     setEditing,
     setCurrentNotes,
-
+    handleCloseSnackbar,
     setCurrentTitle,
     setCurrentContent,
     fetchNotes,

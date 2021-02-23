@@ -6,6 +6,9 @@ import Fab from "@material-ui/core/Fab";
 import Modal from "@material-ui/core/Modal";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import IconButton from "@material-ui/core/IconButton";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
 import AddIcon from "@material-ui/icons/Add";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -64,14 +67,20 @@ const Home = () => {
     setEditing,
     fetchNotes,
     currentNotes,
+    snackbar,
+    handleCloseSnackbar,
   ] = useSelectors(AppState, (state) => [
     state.isEditing,
     state.setEditing,
     state.fetchNotes,
     state.currentNotes,
+    state.snackbar,
+    state.handleCloseSnackbar,
   ]);
 
   const handleFab = () => {
+    console.log(`${process.env.HOST}:${process.env.PORT}`);
+
     setEditing(true, {
       title: "New note",
       content: "",
@@ -148,6 +157,17 @@ const Home = () => {
         children={<AddIcon color="inherit" />}
         onClick={handleFab}
       />
+      <Snackbar
+        open={snackbar.isOpened}
+        onClose={handleCloseSnackbar}
+        autoHideDuration={4000}
+      >
+        <Typography>
+          <MuiAlert elevation={6} variant="filled" severity={snackbar.severity}>
+            <Typography component="span">{snackbar.message}</Typography>
+          </MuiAlert>
+        </Typography>
+      </Snackbar>
     </>
   );
 };
