@@ -13,10 +13,10 @@ export const login = async (
   username: string,
   password: string
 ): Promise<AuthResponse> => {
-  let timer = setTimeout(() => {
-    throw new Error();
-  }, 5000);
   try {
+    let timer = setTimeout(() => {
+      throw new Error();
+    }, 5000);
     console.log({ username, password });
     const response = await api.post("/user/login", {
       username,
@@ -34,10 +34,10 @@ export const register = async (
   username: string,
   password: string
 ): Promise<AuthResponse> => {
-  let timer = setTimeout(() => {
-    throw new Error();
-  }, 5000);
   try {
+    let timer = setTimeout(() => {
+      throw new Error();
+    }, 5000);
     const response = await api.post("/user/register", {
       username,
       password,
