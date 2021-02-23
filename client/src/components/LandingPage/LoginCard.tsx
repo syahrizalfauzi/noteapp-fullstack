@@ -114,6 +114,7 @@ const LoginCard = ({
           label="Username"
           className={classes.textField}
           variant="outlined"
+          autoComplete="username"
           {...usernameProps}
         />
         <TextField
@@ -124,6 +125,7 @@ const LoginCard = ({
           className={classes.textField}
           variant="outlined"
           type="password"
+          autoComplete="current-password"
           {...passwordProps}
         />
         <div className={classes.buttonBar}>

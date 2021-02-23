@@ -135,6 +135,7 @@ const RegisterCard = ({
           inputProps={{
             maxLength: 20,
           }}
+          autoComplete="username"
           {...usernameProps}
         />
         <TextField
@@ -145,6 +146,7 @@ const RegisterCard = ({
           variant="outlined"
           type="password"
           onClick={clearErrorTexts}
+          autoComplete="new-password"
           {...passwordProps}
         />
         <TextField
@@ -155,6 +157,7 @@ const RegisterCard = ({
           variant="outlined"
           type="password"
           onClick={clearErrorTexts}
+          autoComplete="new-password"
           {...confirmProps}
         />
         <div className={classes.buttonBar}>
