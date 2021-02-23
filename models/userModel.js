@@ -7,6 +7,9 @@ const getIdByUsername = (username, callback) => {
     callback
   );
 };
+const getUsernameById = (id, callback) => {
+  connection.query("SELECT username FROM users WHERE id = ?", id, callback);
+};
 const getIdByUsernamePassword = (username, password, callback) => {
   connection.query(
     "SELECT id FROM users WHERE username = ? AND password = MD5(?)",
@@ -24,6 +27,7 @@ const createUser = (username, password, name, callback) => {
 
 export default {
   getIdByUsername,
+  getUsernameById,
   getIdByUsernamePassword,
   createUser,
 };

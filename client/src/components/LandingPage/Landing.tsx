@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useState } from "react";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import Typography from "@material-ui/core/Typography";
@@ -20,7 +19,6 @@ interface SnackbarNotifier {
 }
 
 const Landing = () => {
-  const navigator = useHistory();
   const [isLogin, setIsLogin] = useState(true);
   const [snackbar, setSnackbar] = useState<SnackbarNotifier>({
     isOpened: false,
@@ -31,11 +29,6 @@ const Landing = () => {
   const handleCloseSnackbar = () => {
     setSnackbar((state) => ({ ...state, isOpened: false }));
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token !== null) return navigator.replace("/home");
-  }, [navigator]);
 
   return (
     <div

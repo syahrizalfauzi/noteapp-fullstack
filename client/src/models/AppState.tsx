@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import createModel from "react-scoped-model";
 import Note from "./NoteModel";
-import User from "./UserModel";
+
 import {
   createNote,
   getNotes,
@@ -18,7 +18,6 @@ const AppState = createModel(() => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [currentNotes, setNotes] = useState<Note[]>([]);
-  const [currentUser, setUser] = useState<User | null>(null);
 
   const setCurrentTitle = useCallback((title: string) => {
     setTitle(title);
@@ -37,20 +36,16 @@ const AppState = createModel(() => {
   const setCurrentNotes = useCallback((newNotes: Note[]) => {
     setNotes(newNotes);
   }, []);
-  const setCurrentUser = useCallback(
-    (newUser: User) => {
-      setUser(newUser);
-      setCurrentNotes([]);
-      setEditing(false);
-    },
-    [setCurrentNotes, setEditing]
-  );
 
-  const fetchNotes = useCallback(() => {
-    getNotes().then((notes) => {
-      setCurrentNotes(notes);
-    });
-  }, [setCurrentNotes]);
+  const fetchNotes = useCallback(
+    (reset?: boolean) => {
+      if (reset) setCurrentNotes([]);
+      getNotes().then((notes) => {
+        setCurrentNotes(notes);
+      });
+    },
+    [setCurrentNotes]
+  );
   const pushNote = useCallback(() => {
     if (!currentNote.id) {
       createNote({
@@ -79,12 +74,12 @@ const AppState = createModel(() => {
     isEditing,
     currentNote,
     currentNotes,
-    currentUser,
+
     title,
     content,
     setEditing,
     setCurrentNotes,
-    setCurrentUser,
+
     setCurrentTitle,
     setCurrentContent,
     fetchNotes,

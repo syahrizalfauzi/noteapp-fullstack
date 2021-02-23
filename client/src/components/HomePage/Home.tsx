@@ -7,12 +7,13 @@ import Modal from "@material-ui/core/Modal";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { makeStyles } from "@material-ui/styles";
 import NoteCard from "./NoteCard";
 import Editor from "./Editor";
 
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AppState from "../../models/AppState";
 import { useSelectors } from "react-scoped-model";
 import { useEffect } from "react";
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
   centerTitle: {
     justifyContent: "space-between",
     color: "white",
+    padding: "4px 16px",
   },
   logoutButton: {
     float: "right",
@@ -60,13 +62,11 @@ const Home = () => {
   const [
     isEditing,
     setEditing,
-    currentUser,
     fetchNotes,
     currentNotes,
   ] = useSelectors(AppState, (state) => [
     state.isEditing,
     state.setEditing,
-    state.currentUser,
     state.fetchNotes,
     state.currentNotes,
   ]);
@@ -83,7 +83,9 @@ const Home = () => {
   };
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigator.replace("/");
+    localStorage.removeItem("username");
+    window.dispatchEvent(new Event("storage"));
+    navigator.replace("/login");
   };
   const mainComponent = () => {
     if (currentNotes.length !== 0)
@@ -105,12 +107,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchNotes();
+    fetchNotes(false);
   }, [fetchNotes]);
 
   return (
     <>
-      {currentUser === null ? <Redirect to="/" /> : null}
       <Modal
         open={isEditing}
         onClose={handleCloseModal}
@@ -120,9 +121,15 @@ const Home = () => {
           <Editor />
         </>
       </Modal>
-      <AppBar position="static">
+      <AppBar position="static" color="inherit">
         <Toolbar className={classes.centerTitle}>
-          <Typography variant="h5">Notes</Typography>
+          <Typography variant="h5" style={{ flex: 1 }}>
+            Notes<Typography>{localStorage.getItem("username")}</Typography>
+          </Typography>
+
+          <IconButton color="inherit" onClick={() => fetchNotes(false)}>
+            <RefreshIcon />
+          </IconButton>
           <IconButton color="secondary" onClick={handleLogout}>
             <ExitToAppIcon />
           </IconButton>
@@ -130,15 +137,15 @@ const Home = () => {
       </AppBar>
       <Grid container className={classes.body}>
         <Grid item xs={false} sm={1}></Grid>
-        <Grid item xs={12} sm={10} spacing={2}>
+        <Grid item xs={12} sm={10}>
           {mainComponent()}
         </Grid>
         <Grid item xs={false} sm={1}></Grid>
       </Grid>
       <Fab
-        color="primary"
+        color="default"
         className={classes.fab}
-        children={<AddIcon color="action" />}
+        children={<AddIcon color="inherit" />}
         onClick={handleFab}
       />
     </>

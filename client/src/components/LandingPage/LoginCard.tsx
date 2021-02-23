@@ -6,8 +6,6 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useState } from "react";
 import { LandingCardProps } from "./Landing";
-import { useSelector } from "react-scoped-model";
-import AppState from "../../models/AppState";
 import { useHistory } from "react-router";
 import { login } from "../../services/Auth";
 
@@ -57,7 +55,6 @@ const LoginCard = ({
   });
   const [isBusy, setIsBusy] = useState(false);
 
-  const setUser = useSelector(AppState, (state) => state.setCurrentUser);
   const navigator = useHistory();
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,10 +92,9 @@ const LoginCard = ({
       });
     }
     localStorage.setItem("token", loginResponse.token!);
+    localStorage.setItem("username", loginResponse.username!);
+    window.dispatchEvent(new Event("storage"));
     setIsBusy(false);
-    setUser({
-      token: loginResponse.token!,
-    });
     navigator.replace("/home");
   };
 

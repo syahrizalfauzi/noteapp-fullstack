@@ -46,6 +46,7 @@ const login = (req, res) => {
         return jwt.sign(
           {
             userId: results[0].id,
+            username: results[0].username,
           },
           secretKey,
           (error, encoded) => {
@@ -54,6 +55,7 @@ const login = (req, res) => {
               message: "Login success",
               error: false,
               token: encoded,
+              username,
             });
           }
         );
@@ -62,7 +64,21 @@ const login = (req, res) => {
   });
 };
 
+const info = (req, res) => {
+  const id = req.body.userId;
+  if (!id) return res.status(400).send({ message: "Bad request", error: true });
+
+  userModel.getUsernameById(id, (error, results) => {
+    if (error) return res.status(500).send(error);
+    else if (results.length === 0)
+      return res.status(200).send({ message: "User not found", error: true });
+
+    return res.status(200).send(results);
+  });
+};
+
 export default {
   register,
   login,
+  info,
 };

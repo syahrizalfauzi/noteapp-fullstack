@@ -3,9 +3,15 @@ import { blue, red } from "@material-ui/core/colors";
 import Home from "./components/HomePage/Home";
 import Landing from "./components/LandingPage/Landing";
 import AppState from "./models/AppState";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import StartPage from "./components/StartPage";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
 import UndefinedPage from "./components/UndefinedPage";
+import { useEffect, useState } from "react";
 
 const theme = createMuiTheme({
   palette: {
@@ -20,19 +26,37 @@ const theme = createMuiTheme({
 });
 
 function App() {
+  const [token, setToken] = useState(undefined);
+
+  useEffect(() => {
+    const checkUserData = () => {
+      setToken(localStorage.getItem("token"));
+      console.log(localStorage.getItem("token"));
+      console.log("token state", token);
+    };
+
+    checkUserData();
+
+    window.onstorage = checkUserData;
+
+    return () => {
+      window.onstorage = null;
+    };
+  }, [token]);
+
   return (
     <Router>
       <ThemeProvider theme={theme}>
         <AppState.Provider>
           <Switch>
             <Route exact path="/">
-              <StartPage />
+              {token ? <Redirect to="/home" /> : <Redirect to="/login" />}
             </Route>
             <Route path="/login">
-              <Landing />
+              {token ? <Redirect to="/home" /> : <Landing />}
             </Route>
             <Route path="/home">
-              <Home />
+              {token ? <Home /> : <Redirect to="/login" />}
             </Route>
             <Route path="*">
               <UndefinedPage />
