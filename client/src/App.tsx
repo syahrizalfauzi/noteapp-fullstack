@@ -31,8 +31,6 @@ function App() {
   useEffect(() => {
     const checkUserData = () => {
       setToken(localStorage.getItem("token"));
-      console.log(localStorage.getItem("token"));
-      console.log("token state", token);
     };
 
     checkUserData();

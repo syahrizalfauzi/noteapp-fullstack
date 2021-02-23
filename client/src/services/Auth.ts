@@ -17,7 +17,6 @@ export const login = async (
     let timer = setTimeout(() => {
       throw new Error();
     }, 5000);
-    console.log({ username, password });
     const response = await api.post("/user/login", {
       username,
       password,

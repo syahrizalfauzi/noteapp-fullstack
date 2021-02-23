@@ -9,14 +9,19 @@ const register = (req, res) => {
     return res.status(400).send({ message: "Bad request", error: true });
 
   userModel.getIdByUsername(username, (error, results) => {
-    if (error) return res.status(500).send(error);
-    else if (results.length > 0)
+    if (error) {
+      console.log("getIdByUsername database error", error);
+      return res.status(500).send(error);
+    } else if (results.length > 0)
       return res
         .status(200)
         .send({ message: "User already exist!", error: true });
 
     return userModel.createUser(username, password, (error, _) => {
-      if (error) return res.status(500).send(error);
+      if (error) {
+        console.log("createUser database error", error);
+        return res.status(500).send(error);
+      }
       return res
         .status(201)
         .send({ message: "User created, please log in", error: false });
@@ -30,16 +35,20 @@ const login = (req, res) => {
     return res.status(400).send({ message: "Bad request", error: true });
 
   userModel.getIdByUsername(username, (error, results) => {
-    if (error) return res.status(500).send(error);
-    else if (results.length === 0)
+    if (error) {
+      console.log("getIdByUsername database error", error);
+      return res.status(500).send(error);
+    } else if (results.length === 0)
       return res.status(200).send({ message: "User not found", error: true });
 
     return userModel.getIdByUsernamePassword(
       username,
       password,
       (error, results) => {
-        if (error) return res.status(500).send(error);
-        else if (results.length === 0)
+        if (error) {
+          console.log("getIdByUsernamePassword database error", error);
+          return res.status(500).send(error);
+        } else if (results.length === 0)
           return res
             .status(200)
             .send({ message: "Wrong password", error: true });
