@@ -8,6 +8,7 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import AddIcon from "@material-ui/icons/Add";
 import RefreshIcon from "@material-ui/icons/Refresh";
@@ -69,6 +70,7 @@ const Home = () => {
     currentNotes,
     snackbar,
     handleCloseSnackbar,
+    isBusy,
   ] = useSelectors(AppState, (state) => [
     state.isEditing,
     state.setEditing,
@@ -76,6 +78,7 @@ const Home = () => {
     state.currentNotes,
     state.snackbar,
     state.handleCloseSnackbar,
+    state.isBusy,
   ]);
 
   const handleFab = () => {
@@ -136,9 +139,17 @@ const Home = () => {
             Notes<Typography>{localStorage.getItem("username")}</Typography>
           </Typography>
 
-          <IconButton color="inherit" onClick={() => fetchNotes(false)}>
-            <RefreshIcon />
-          </IconButton>
+          {isBusy ? (
+            <CircularProgress
+              color="inherit"
+              size="24px"
+              style={{ margin: "12px" }}
+            />
+          ) : (
+            <IconButton color="inherit" onClick={() => fetchNotes(false)}>
+              <RefreshIcon />
+            </IconButton>
+          )}
           <IconButton color="secondary" onClick={handleLogout}>
             <ExitToAppIcon />
           </IconButton>

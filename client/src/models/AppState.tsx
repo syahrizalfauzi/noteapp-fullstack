@@ -30,6 +30,7 @@ const AppState = createModel(() => {
     message: "",
     severity: "success",
   });
+  const [isBusy, setIsBusy] = useState(false);
 
   const handleCloseSnackbar = useCallback(() => {
     setSnackbar((state) => ({ ...state, isOpened: false }));
@@ -55,16 +56,20 @@ const AppState = createModel(() => {
 
   const fetchNotes = useCallback(
     (reset?: boolean) => {
+      setIsBusy(true);
       if (reset) setCurrentNotes([]);
       getNotes().then((response) => {
-        if (response.error)
+        if (response.error) {
+          setIsBusy(false);
           return setSnackbar({
             isOpened: true,
             message: response.message,
             severity: "error",
           });
+        }
 
         setCurrentNotes(response.results);
+        setIsBusy(false);
       });
     },
     [setCurrentNotes]
@@ -124,6 +129,7 @@ const AppState = createModel(() => {
     snackbar,
     title,
     content,
+    isBusy,
     setEditing,
     setCurrentNotes,
     handleCloseSnackbar,
