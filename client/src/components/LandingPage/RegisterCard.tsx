@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { LandingCardProps } from "./Landing";
 import { TextFormFieldProps } from "./LoginCard";
 import { register } from "../../services/Auth";
+// import { sendReset } from "../../services/Auth";
 
 const useStyles = makeStyles({
   loginContainer: {
@@ -161,6 +162,25 @@ const RegisterCard = ({
           {...confirmProps}
         />
         <div className={classes.buttonBar}>
+          {/* <Button
+            onClick={async () => {
+              const msg = await sendReset();
+              if (msg === "error") {
+                return setSnackbar({
+                  isOpened: true,
+                  message: "error reset",
+                  severity: "error",
+                });
+              }
+              return setSnackbar({
+                isOpened: true,
+                message: "reset success, check email",
+                severity: "success",
+              });
+            }}
+          >
+            reset
+          </Button> */}
           <Button onClick={handleLogin}>login</Button>
           {!isBusy ? (
             <Button type="submit" color="primary">

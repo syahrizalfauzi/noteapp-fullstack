@@ -12,6 +12,7 @@ import {
 
 import UndefinedPage from "./components/UndefinedPage";
 import { useEffect, useState } from "react";
+// import ResetPasswordPage from "./components/ResetPasswordPage";
 
 const theme = createMuiTheme({
   palette: {
@@ -56,6 +57,9 @@ function App() {
             <Route path="/home">
               {token ? <Home /> : <Redirect to="/login" />}
             </Route>
+            {/* <Route path="/resetpassword/:token">
+              <ResetPasswordPage />
+            </Route> */}
             <Route path="*">
               <UndefinedPage />
             </Route>
